@@ -142,3 +142,18 @@ def chart_interactive_wind_vs_temp(df: pd.DataFrame) -> alt.Chart:
     title='Wind vs Max Temperature (Highlight by Weather Type)'
     )
     return chart
+
+def chart_static_temp_weather(df: pd.DataFrame) -> alt.Chart:
+    return (
+        alt.Chart(df).mark_bar().encode(
+    x=alt.X('temp_max:Q', bin=alt.Bin(maxbins=20)),
+    y='count()'
+).facet(
+    column=alt.Column('weather:N', title='Weather Type')
+).properties(
+    title=alt.TitleParams(
+        text='Temperature Distribution by Weather Type',
+        anchor='middle'
+    )
+)
+    )

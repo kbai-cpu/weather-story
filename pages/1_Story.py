@@ -5,6 +5,7 @@ from charts.charts import (
     base_theme,
     chart_hook_temp_over_time,
     chart_context_seasonality,
+    chart_static_temp_weather,
     chart_surprise_extremes,
     chart_explain_precip_vs_temp,
 )
@@ -38,3 +39,8 @@ st.header("4) Precipitation vs temperature")
 st.write("We wish to test a plausible explanation: are the warmest days also the driest (or not)?")
 st.altair_chart(chart_explain_precip_vs_temp(df), use_container_width=True)
 st.caption("Takeaway: The relationship is noisy — precipitation alone does not explain extreme heat, motivating more fine-grained exploration.")
+
+st.header("4) Temperature Distribution by Weather Type")
+st.write("We created a faceted histogram that shows the distribution of daily maximum temperatures separately for each weather type, allowing us to compare how temperature ranges differ across weather conditions.")
+st.altair_chart(chart_static_temp_weather(df), use_container_width=True)
+st.caption("Takeaway: From the distributions we can see that snow and drizzle occur almost entirely at lower temperatures, fog and rain cluster in the mid-range, and sun clusters at higher temperatures, showing that daily maximum temperature is strongly associated with the type of weather condition. ")
