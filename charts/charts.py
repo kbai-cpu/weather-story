@@ -107,3 +107,38 @@ def chart_dashboard(df: pd.DataFrame) -> alt.Chart:
     )
 
     return alt.vconcat(line, hist).resolve_scale(color="independent")
+
+def chart_interactive_wind_vs_temp(df: pd.DataFrame) -> alt.Chart:
+    weather_dropdown = alt.binding_select(
+    options=sorted(df['weather'].unique()),
+    name='Highlight Weather: '
+)
+
+    selection = alt.selection_point(
+    fields=['weather'],
+    bind=weather_dropdown,
+    empty='all'
+)
+
+    colors = alt.Scale(
+    domain=['drizzle', 'fog', 'rain', 'snow', 'sun'],
+    range=['#1f77b4','#ff7f0e','#d62728','#17becf','#2ca02c'] 
+)
+
+    chart = alt.Chart(df).mark_circle().encode(
+    x='temp_max:Q',
+    y='wind:Q',
+    color=alt.Color('weather:N', scale=colors),
+    opacity=alt.condition(
+        selection,
+        alt.value(1),      
+        alt.value(0.115)    
+    ),
+    ).add_params(
+    selection
+    ).properties(
+    width=500,
+    height=400,
+    title='Wind vs Max Temperature (Highlight by Weather Type)'
+    )
+    return chart
