@@ -1,6 +1,6 @@
 import streamlit as st
 from utils.io import load_weather
-from charts.charts import chart_dashboard, chart_interactive_wind_vs_temp
+from charts.charts import chart_dashboard, chart_interactive_wind_vs_temp, chart_static_temp_weather
 
 st.set_page_config(page_title="Explore", layout="wide")
 df = load_weather()
@@ -15,6 +15,11 @@ st.write("Below we have created an interactive scatterplot that shows the relati
 
 st.altair_chart(chart_interactive_wind_vs_temp(df), use_container_width=True)
 st.write("Overall, there is no strong linear relationship between wind and temperature for any weather type, but weather types clearly separate along the temperature axis, with wind variability differing slightly by weather condition.")
+
+st.header("4) Temperature Distribution by Weather Type")
+st.write("We created a faceted histogram that shows the distribution of daily maximum temperatures separately for each weather type, allowing us to compare how temperature ranges differ across weather conditions.")
+st.altair_chart(chart_static_temp_weather(df), use_container_width=True)
+st.caption("Takeaway: From the distributions we can see that snow and drizzle occur almost entirely at lower temperatures, fog and rain cluster in the mid-range, and sun clusters at higher temperatures, showing that daily maximum temperature is strongly associated with the type of weather condition. ")
 
 st.markdown("**Guided prompts:**")
 st.write("- Filter to one weather type (e.g., `sun`, `rain`)—does the temperature distribution shift?")
